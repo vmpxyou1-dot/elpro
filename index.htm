@@ -15,9 +15,47 @@
     flex-direction: column;
     align-items: center;
     min-height: 100dvh;
-    padding: 20px;
+    padding: 0;
   }
   .wrap { width: min(900px, 96vw); position: relative; }
+  
+  .game-header {
+    width: 100%;
+    background: #12171b;
+    border-bottom: 2px solid #1f2a32;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  
+  .game-header h1 {
+    font-size: 20px;
+    margin: 0;
+  }
+  
+  .header-stats {
+    display: flex;
+    gap: 30px;
+  }
+  
+  .stat-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .stat-item label {
+    font-size: 12px;
+  }
+  
+  .stat-item .score-display {
+    font-size: 20px;
+  }
   .card { background: #12171b; border: 1px solid #1f2a32; border-radius: 14px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,.35); }
   .overlay { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(8,11,14,.85); backdrop-filter: blur(4px); padding: 16px; z-index: 100; }
   .hidden { display: none !important; }
@@ -83,17 +121,16 @@
     box-shadow: 0 20px 60px rgba(0,0,0,0.5);
     max-width: 100%;
     display: block;
-    margin: 20px auto;
+    margin: 20px auto 10px auto;
     touch-action: none;
     cursor: pointer;
   }
   
   #controls {
     width: 100%;
-    margin-top: 15px;
     display: flex;
-    flex-direction: column;
-    gap: 15px;
+    justify-content: center;
+    padding: 0 20px 20px 20px;
   }
   
   .control-row {
@@ -105,7 +142,6 @@
     align-items: center;
     justify-content: center;
     gap: 20px;
-    flex-wrap: wrap;
   }
   
   .control-group {
@@ -131,6 +167,10 @@
   .info {
     color: #94a3b8;
     font-size: 13px;
+    text-align: center;
+    display: block;
+    margin-bottom: 15px;
+    padding: 0 20px;
   }
   
   #status {
@@ -239,10 +279,40 @@
   
   @media (max-width: 720px) {
     #canvas { width: 100%; height: auto; }
+    .game-header {
+      padding: 12px 15px;
+    }
+    .game-header h1 {
+      font-size: 18px;
+    }
+    .header-stats {
+      gap: 20px;
+    }
+    .stat-item label {
+      font-size: 11px;
+    }
+    .stat-item .score-display {
+      font-size: 18px;
+    }
   }
 </style>
 </head>
 <body>
+  <!-- Game Header with Score & Level -->
+  <div class="game-header">
+    <h1>🚀 Crash the Comet</h1>
+    <div class="header-stats">
+      <div class="stat-item">
+        <label>Score:</label>
+        <span class="score-display" id="scoreDisplay">0</span>
+      </div>
+      <div class="stat-item">
+        <label>Level:</label>
+        <span class="score-display" id="levelDisplay">1</span>
+      </div>
+    </div>
+  </div>
+
   <div class="wrap">
     <!-- Intro Overlay -->
     <div id="intro-overlay" class="overlay">
@@ -271,22 +341,9 @@
 
     <canvas id="canvas" width="400" height="600"></canvas>
     
+    <span class="info">Use buttons, tap screen, or press SPACE to change direction</span>
+    
     <div id="controls">
-      <div class="control-row">
-        <div class="control-group">
-          <label>Score:</label>
-          <span class="score-display" id="scoreDisplay">0</span>
-        </div>
-        <div class="control-group">
-          <label>Level:</label>
-          <span class="score-display" id="levelDisplay">1</span>
-        </div>
-      </div>
-      
-      <div class="control-row">
-        <span class="info" style="text-align: center;">Use buttons, tap screen, or press SPACE to change direction</span>
-      </div>
-      
       <div class="control-row">
         <div class="direction-controls">
           <button id="btn-left" class="direction-btn">←</button>
