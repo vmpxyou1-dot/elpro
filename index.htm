@@ -6,42 +6,6 @@
     left: 0;
   }
   
-  .direction-controls {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .direction-btn {
-    width: 70px;
-    height: 70px;
-    background: linear-gradient(135deg, #7c3aed, #a855f7);
-    border: 3px solid #a855f7;
-    border-radius: 50%;
-    color: #fff;
-    font-size: 32px;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 6px 20px rgba(168,85,247,0.4);
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    touch-action: manipulation;
-    user-select: none;
-  }
-  
-  .direction-btn:active {
-    transform: scale(0.95);
-    box-shadow: 0 3px 10px rgba(168,85,247,0.4);
-  }
-  
-  .direction-btn:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-  }
-  
   @keyframes bounce {
     0%, 100% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
     50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
@@ -49,9 +13,4 @@
   
   @media (max-width: 720px) {
     #canvas { width: 100%; height: auto; }
-    .direction-btn {
-      width: 80px;
-      height: 80px;
-      font-size: 36px;
-    }
   }
