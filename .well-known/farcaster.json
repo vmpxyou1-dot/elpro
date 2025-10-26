@@ -3,7 +3,8 @@
     "header": "eyJmaWQiOjUyNjAzOSwidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweDRBQjE5RjVjQzc3NjgxQTFmMWYyYTNCNjY0NzNBMDdiM2U4RmUyODcifQ",
     "payload": "eyJkb21haW4iOiJlbHByby1qYWRlLnZlcmNlbC5hcHAifQ",
     "signature": "qwJ0Fxf5t+jLsoCWb7bIIqnKTpugSS2SZUzRmQFonwkFhWTbVQI7sF1k9uxJ4OpViC+ko2NHRvk0ZDu1v11iKBs="
-  },
+  }
+}
   "miniapp": {
     "version": "1",
     "name": "Farcaster Game",
