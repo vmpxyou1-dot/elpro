@@ -1,9 +1,235 @@
-.instructions li:before {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>🚀 Crash the Comet — Farcaster Mini App</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: linear-gradient(135deg, #0a0e13 0%, #1a1f2e 100%);
+    color: #e7ecf0;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100dvh;
+    padding: 20px;
+  }
+  .wrap { width: min(900px, 96vw); position: relative; }
+  .card { background: #12171b; border: 1px solid #1f2a32; border-radius: 14px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,.35); }
+  .overlay { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(8,11,14,.85); backdrop-filter: blur(4px); padding: 16px; z-index: 100; }
+  .hidden { display: none !important; }
+  
+  h1 {
+    font-size: 28px;
+    font-weight: 900;
+    margin-bottom: 12px;
+    text-shadow: 0 2px 10px rgba(168,85,247,0.5);
+  }
+  
+  .muted {
+    color: #9aa7b1;
+    font-size: 14px;
+    line-height: 1.4;
+    margin-bottom: 16px;
+  }
+  
+  .btn-primary {
+    padding: 14px 28px;
+    background: linear-gradient(135deg, #a855f7, #7c3aed);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-weight: 900;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(168,85,247,0.4);
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(168,85,247,0.5);
+  }
+  
+  .btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  .btn-secondary {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #38bdf8, #34d399);
+    color: #0a1929;
+    border: none;
+    border-radius: 10px;
+    font-weight: 900;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(56,189,248,0.3);
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  
+  #canvas {
+    background: #0a0a1f;
+    border: 3px solid #7c3aed;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    max-width: 100%;
+    display: block;
+    margin: 20px auto;
+    touch-action: none;
+    cursor: pointer;
+  }
+  
+  #controls {
+    width: 100%;
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .control-row {
+    background: rgba(15,23,42,0.8);
+    border: 2px solid #1e293b;
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .control-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  label {
+    font-weight: 700;
+    font-size: 14px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .score-display {
+    font-size: 18px;
+    font-weight: 700;
+    color: #a855f7;
+  }
+  
+  .info {
+    color: #94a3b8;
+    font-size: 13px;
+  }
+  
+  #status {
+    margin-top: 15px;
+    font-size: 13px;
+    line-height: 1.5;
+    background: #0f151a;
+    border: 1px solid #1f2a32;
+    border-radius: 10px;
+    padding: 12px;
+  }
+  
+  #status b { color: #cde7d8; }
+  #status .ok { color: #4ade80; }
+  #status .warn { color: #fbbf24; }
+  #status .err { color: #f87171; }
+  #status a { color: #86c6ff; text-decoration: none; }
+  
+  #play-again {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 16px 32px;
+    background: linear-gradient(135deg, #a855f7, #7c3aed);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-weight: 900;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 10px 40px rgba(168,85,247,0.5);
+    z-index: 50;
+  }
+  
+  .instructions {
+    background: rgba(168,85,247,0.1);
+    border: 1px solid rgba(168,85,247,0.3);
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 15px;
+  }
+  
+  .instructions h3 {
+    color: #a855f7;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  
+  .instructions ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .instructions li {
+    color: #cbd5e1;
+    font-size: 14px;
+    margin-bottom: 8px;
+    padding-left: 20px;
+    position: relative;
+  }
+  
+  .instructions li:before {
     content: "•";
     color: #a855f7;
     font-weight: bold;
     position: absolute;
     left: 0;
+  }
+  
+  .direction-controls {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .direction-btn {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #7c3aed, #a855f7);
+    border: 3px solid #a855f7;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 36px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(168,85,247,0.4);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    touch-action: manipulation;
+    user-select: none;
+  }
+  
+  .direction-btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 3px 10px rgba(168,85,247,0.4);
   }
   
   @keyframes bounce {
@@ -14,3 +240,494 @@
   @media (max-width: 720px) {
     #canvas { width: 100%; height: auto; }
   }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- Intro Overlay -->
+    <div id="intro-overlay" class="overlay">
+      <div class="card" role="dialog" aria-modal="true">
+        <h1>🚀 Crash the Comet</h1>
+        <p class="muted">Navigate your comet through the winding track!</p>
+
+        <div style="display: flex; justify-content: center; gap: 12px; margin-top: 20px;">
+          <button id="play" class="btn-primary">💰 Pay & Play</button>
+        </div>
+        
+        <div class="instructions">
+          <h3>How to Play:</h3>
+          <ul>
+            <li>Tap/Click or press SPACE to change direction</li>
+            <li>Keep the comet on the purple track</li>
+            <li>Red edges mark the track boundaries</li>
+            <li>The game speeds up over time</li>
+            <li>Survive longer to increase your score!</li>
+          </ul>
+        </div>
+        
+        <div id="status" class="hidden"></div>
+      </div>
+    </div>
+
+    <canvas id="canvas" width="400" height="600"></canvas>
+    
+    <div id="controls">
+      <div class="control-row">
+        <div class="control-group">
+          <label>Score:</label>
+          <span class="score-display" id="scoreDisplay">0</span>
+        </div>
+        <div class="control-group">
+          <label>Level:</label>
+          <span class="score-display" id="levelDisplay">1</span>
+        </div>
+      </div>
+      
+      <div class="control-row">
+        <span class="info" style="text-align: center;">Use buttons, tap screen, or press SPACE to change direction</span>
+      </div>
+      
+      <div class="control-row">
+        <div class="direction-controls">
+          <button id="btn-left" class="direction-btn">←</button>
+          <button id="btn-right" class="direction-btn">→</button>
+        </div>
+      </div>
+    </div>
+
+    <button id="play-again" class="hidden">💰 Pay & Play Again</button>
+  </div>
+
+<script type="module">
+import { sdk } from 'https://esm.sh/@farcaster/miniapp-sdk';
+sdk.actions.ready();
+
+/* ===== CONFIG ===== */
+const USE_BASE_SEPOLIA = false;
+const RECIPIENT = "0xc4EB7B433f9911a15c18729D8BE5e5fDa1187E1a";
+const AMOUNT_ETH = "0.00001";
+
+const BASE_MAINNET = { chainId: "0x2105",  explorer: "https://basescan.org/tx/" };
+const BASE_SEPOLIA = { chainId: "0x14a34", explorer: "https://sepolia.basescan.org/tx/" };
+const TARGET = USE_BASE_SEPOLIA ? BASE_SEPOLIA : BASE_MAINNET;
+
+/* ===== DOM ===== */
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const statusEl = document.getElementById('status');
+const playBtn = document.getElementById('play');
+const playAgainBtn = document.getElementById('play-again');
+const scoreDisplay = document.getElementById('scoreDisplay');
+const levelDisplay = document.getElementById('levelDisplay');
+
+const showStatus = () => statusEl.classList.remove('hidden');
+const addLine = html => { showStatus(); statusEl.insertAdjacentHTML('beforeend', `<div>${html}</div>`); };
+const clearStatus = () => statusEl.innerHTML = '';
+const disable = (el, yes=true) => { if (el) el.disabled = yes; };
+
+/* ===== Wallet Helpers ===== */
+function parseEther(x) {
+  const [w, f=""] = String(x).split('.');
+  const frac = (f + '0'.repeat(18)).slice(0, 18);
+  return '0x' + (BigInt(w) * 10n**18n + BigInt(frac)).toString(16);
+}
+
+async function getProvider() {
+  try {
+    const p = await sdk.wallet.getEthereumProvider();
+    if (p) return p;
+  } catch {}
+  return window.ethereum ?? null;
+}
+
+async function ensureChain(provider, chainId) {
+  const current = (await provider.request({ method: 'eth_chainId' }))?.toLowerCase();
+  if (current === chainId.toLowerCase()) return;
+  try {
+    await provider.request({ method: 'wallet_switchEthereumChain', params: [{ chainId }] });
+  } catch (e) {
+    if (e?.code === 4902) {
+      await provider.request({ method: 'wallet_addEthereumChain', params: [{ chainId }] });
+      await provider.request({ method: 'wallet_switchEthereumChain', params: [{ chainId }] });
+    } else { throw e; }
+  }
+}
+
+async function requiredPayment() {
+  clearStatus();
+  addLine(`<b>Step 1:</b> Locating wallet provider…`);
+  const provider = await getProvider();
+  if (!provider) {
+    addLine(`<span class="err">No wallet available.</span> Open in Farcaster or enable a wallet.`);
+    throw new Error('NO_PROVIDER');
+  }
+  addLine(`<span class="ok">Provider ready.</span>`);
+
+  addLine(`<b>Step 2:</b> Requesting accounts…`);
+  const [from] = await provider.request({ method: 'eth_requestAccounts' });
+  addLine(`<span class="ok">Account: ${from.slice(0,6)}…${from.slice(-4)}</span>`);
+
+  addLine(`<b>Step 3:</b> Switching to Base${USE_BASE_SEPOLIA?' Sepolia':''}…`);
+  await ensureChain(provider, TARGET.chainId);
+  addLine(`<span class="ok">On Base${USE_BASE_SEPOLIA?' Sepolia':''}.</span>`);
+
+  addLine(`<b>Step 4:</b> Sending ${AMOUNT_ETH} ETH to ${RECIPIENT.slice(0,6)}…${RECIPIENT.slice(-4)}…`);
+  const hash = await provider.request({
+    method: 'eth_sendTransaction',
+    params: [{ from, to: RECIPIENT, value: parseEther(AMOUNT_ETH) }]
+  });
+  addLine(`<span class="ok">TX sent.</span> <a target="_blank" rel="noopener" href="${TARGET.explorer}${hash}">View on Basescan</a>`);
+  return hash;
+}
+
+async function payThen(action, triggerBtn) {
+  try {
+    disable(triggerBtn, true);
+    await requiredPayment();
+    await action();
+  } catch (e) {
+    console.warn('Payment gate blocked action:', e);
+    addLine(`<span class="warn">Payment required. Please try again.</span>`);
+  } finally {
+    disable(triggerBtn, false);
+  }
+}
+
+/* ===== Game State ===== */
+let gameState = {
+  comet: { x: 0, y: 0, size: 12, speed: 2.5, direction: 1 },
+  track: [],
+  trackWidth: 150,
+  cameraY: 0,
+  animationId: null,
+  distance: 0,
+  speedIncrease: 0,
+  score: 0,
+  level: 1,
+  gameActive: false,
+  gameOver: false
+};
+
+/* ===== Track Generation ===== */
+function generateTrack() {
+  const track = [];
+  let centerX = canvas.width / 2;
+  const segmentHeight = 20;
+  
+  for (let i = 0; i < 300; i++) {
+    const change = (Math.random() - 0.5) * 15;
+    centerX = Math.max(gameState.trackWidth / 2 + 20, 
+                      Math.min(canvas.width - gameState.trackWidth / 2 - 20, 
+                              centerX + change));
+    
+    track.push({
+      y: i * segmentHeight,
+      centerX: centerX,
+      width: gameState.trackWidth
+    });
+  }
+  return track;
+}
+
+function resetGame() {
+  gameState.track = generateTrack();
+  gameState.comet = {
+    x: canvas.width / 2,
+    y: 100,
+    size: 12,
+    speed: 2.5,
+    direction: 1
+  };
+  gameState.cameraY = 0;
+  gameState.distance = 0;
+  gameState.speedIncrease = 0;
+}
+
+/* ===== Draw Functions ===== */
+function drawComet() {
+  const c = gameState.comet;
+  const screenY = c.y - gameState.cameraY;
+  
+  ctx.save();
+  ctx.translate(c.x, screenY);
+  
+  // Comet tail
+  const tailLength = 40;
+  const gradient = ctx.createLinearGradient(0, c.size, 0, c.size + tailLength);
+  gradient.addColorStop(0, 'rgba(168, 85, 247, 0.8)');
+  gradient.addColorStop(0.5, 'rgba(124, 58, 237, 0.4)');
+  gradient.addColorStop(1, 'rgba(124, 58, 237, 0)');
+  
+  ctx.fillStyle = gradient;
+  ctx.beginPath();
+  ctx.moveTo(-c.size * 0.5, c.size);
+  ctx.lineTo(c.size * 0.5, c.size);
+  ctx.lineTo(c.size * 0.3, c.size + tailLength);
+  ctx.lineTo(-c.size * 0.3, c.size + tailLength);
+  ctx.closePath();
+  ctx.fill();
+  
+  // Comet body glow
+  const glowGradient = ctx.createRadialGradient(0, 0, 0, 0, 0, c.size * 1.5);
+  glowGradient.addColorStop(0, 'rgba(168, 85, 247, 0.5)');
+  glowGradient.addColorStop(1, 'rgba(168, 85, 247, 0)');
+  ctx.fillStyle = glowGradient;
+  ctx.beginPath();
+  ctx.arc(0, 0, c.size * 1.5, 0, Math.PI * 2);
+  ctx.fill();
+  
+  // Comet body
+  const bodyGradient = ctx.createRadialGradient(0, 0, 0, 0, 0, c.size);
+  bodyGradient.addColorStop(0, '#e9d5ff');
+  bodyGradient.addColorStop(0.5, '#a855f7');
+  bodyGradient.addColorStop(1, '#7c3aed');
+  
+  ctx.fillStyle = bodyGradient;
+  ctx.beginPath();
+  ctx.arc(0, 0, c.size, 0, Math.PI * 2);
+  ctx.fill();
+  
+  // Farcaster symbol
+  ctx.strokeStyle = '#ffffff';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.arc(0, 0, c.size * 0.5, 0, Math.PI * 2);
+  ctx.stroke();
+  
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 10px Arial';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('F', 0, 0);
+  
+  ctx.restore();
+}
+
+function drawTrack() {
+  for (let segment of gameState.track) {
+    const screenY = segment.y - gameState.cameraY;
+    
+    if (screenY < -50 || screenY > canvas.height + 50) continue;
+    
+    // Track boundaries (dark walls)
+    ctx.fillStyle = '#1a1a2e';
+    ctx.fillRect(0, screenY, segment.centerX - segment.width / 2, 20);
+    ctx.fillRect(segment.centerX + segment.width / 2, screenY, canvas.width, 20);
+    
+    // Track path (lighter)
+    const trackGradient = ctx.createLinearGradient(
+      segment.centerX - segment.width / 2, 0,
+      segment.centerX + segment.width / 2, 0
+    );
+    trackGradient.addColorStop(0, '#2d1b4e');
+    trackGradient.addColorStop(0.5, '#4a1d7a');
+    trackGradient.addColorStop(1, '#2d1b4e');
+    
+    ctx.fillStyle = trackGradient;
+    ctx.fillRect(segment.centerX - segment.width / 2, screenY, segment.width, 20);
+    
+    // Center line
+    ctx.strokeStyle = '#a855f7';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([10, 10]);
+    ctx.beginPath();
+    ctx.moveTo(segment.centerX, screenY);
+    ctx.lineTo(segment.centerX, screenY + 20);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    
+    // Edge markers
+    ctx.strokeStyle = '#ef4444';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(segment.centerX - segment.width / 2, screenY);
+    ctx.lineTo(segment.centerX - segment.width / 2, screenY + 20);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(segment.centerX + segment.width / 2, screenY);
+    ctx.lineTo(segment.centerX + segment.width / 2, screenY + 20);
+    ctx.stroke();
+  }
+}
+
+function drawStars() {
+  ctx.fillStyle = '#ffffff';
+  for (let i = 0; i < 50; i++) {
+    const x = (i * 137.5) % canvas.width;
+    const y = ((i * 197.3) + gameState.cameraY * 0.5) % canvas.height;
+    ctx.fillRect(x, y, 2, 2);
+  }
+}
+
+/* ===== Collision Detection ===== */
+function checkCollision() {
+  const c = gameState.comet;
+  const segmentIndex = Math.floor(c.y / 20);
+  
+  if (segmentIndex >= 0 && segmentIndex < gameState.track.length) {
+    const segment = gameState.track[segmentIndex];
+    const leftBound = segment.centerX - segment.width / 2;
+    const rightBound = segment.centerX + segment.width / 2;
+    
+    if (c.x < leftBound + 5 || c.x > rightBound - 5) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/* ===== Game Loop ===== */
+function gameLoop() {
+  if (!gameState.gameActive || gameState.gameOver) return;
+  
+  // Background
+  ctx.fillStyle = '#0a0a1f';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
+  drawStars();
+  drawTrack();
+  
+  // Move comet
+  const c = gameState.comet;
+  c.x += c.direction * 2;
+  c.y += c.speed + gameState.speedIncrease;
+  gameState.cameraY = c.y - 100;
+  gameState.distance += c.speed + gameState.speedIncrease;
+  
+  // Speed increase
+  gameState.speedIncrease += 0.0005;
+  
+  // Update score
+  gameState.score = Math.floor(gameState.distance / 10);
+  scoreDisplay.textContent = gameState.score;
+  
+  // Level up
+  if (c.y / 20 >= gameState.track.length - 20) {
+    gameState.level++;
+    levelDisplay.textContent = gameState.level;
+    gameState.trackWidth = Math.max(80, gameState.trackWidth - 10);
+    resetGame();
+  }
+  
+  drawComet();
+  
+  // Check collision
+  if (checkCollision()) {
+    endGame();
+    return;
+  }
+  
+  gameState.animationId = requestAnimationFrame(gameLoop);
+}
+
+/* ===== End Game ===== */
+function endGame() {
+  gameState.gameOver = true;
+  gameState.gameActive = false;
+  
+  ctx.fillStyle = 'rgba(0,0,0,0.7)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
+  ctx.fillStyle = '#e7ecf0';
+  ctx.font = 'bold 48px system-ui';
+  ctx.textAlign = 'center';
+  ctx.fillText('Crashed!', canvas.width / 2, canvas.height / 2 - 60);
+  
+  ctx.font = 'bold 32px system-ui';
+  ctx.fillStyle = '#a855f7';
+  ctx.fillText('Score: ' + gameState.score, canvas.width / 2, canvas.height / 2 - 10);
+  
+  ctx.font = 'bold 24px system-ui';
+  ctx.fillStyle = '#7c3aed';
+  ctx.fillText('Level: ' + gameState.level, canvas.width / 2, canvas.height / 2 + 30);
+  
+  ctx.font = '18px system-ui';
+  ctx.fillStyle = '#a8b6c1';
+  ctx.fillText('Click button below to play again', canvas.width / 2, canvas.height / 2 + 65);
+  
+  playAgainBtn.classList.remove('hidden');
+}
+
+/* ===== Event Listeners ===== */
+function changeDirection() {
+  if (!gameState.gameActive || gameState.gameOver) return;
+  gameState.comet.direction *= -1;
+}
+
+canvas.addEventListener('click', changeDirection);
+canvas.addEventListener('touchstart', (e) => {
+  e.preventDefault();
+  changeDirection();
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.code === 'Space' || e.code === 'ArrowLeft' || e.code === 'ArrowRight') {
+    e.preventDefault();
+    changeDirection();
+  }
+});
+
+// Direction button controls
+document.getElementById('btn-left').addEventListener('click', () => {
+  if (!gameState.gameActive || gameState.gameOver) return;
+  gameState.comet.direction = -1;
+});
+
+document.getElementById('btn-left').addEventListener('touchstart', (e) => {
+  e.preventDefault();
+  if (!gameState.gameActive || gameState.gameOver) return;
+  gameState.comet.direction = -1;
+});
+
+document.getElementById('btn-right').addEventListener('click', () => {
+  if (!gameState.gameActive || gameState.gameOver) return;
+  gameState.comet.direction = 1;
+});
+
+document.getElementById('btn-right').addEventListener('touchstart', (e) => {
+  e.preventDefault();
+  if (!gameState.gameActive || gameState.gameOver) return;
+  gameState.comet.direction = 1;
+});
+
+/* ===== Start Game (Pay-Gated) ===== */
+playBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  payThen(() => {
+    document.getElementById('intro-overlay').classList.add('hidden');
+    gameState.gameActive = true;
+    gameState.gameOver = false;
+    gameState.score = 0;
+    gameState.level = 1;
+    gameState.trackWidth = 150;
+    resetGame();
+    scoreDisplay.textContent = '0';
+    levelDisplay.textContent = '1';
+    gameLoop();
+  }, playBtn);
+});
+
+/* ===== Play Again (Pay-Gated) ===== */
+playAgainBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  payThen(() => {
+    playAgainBtn.classList.add('hidden');
+    gameState.gameActive = true;
+    gameState.gameOver = false;
+    gameState.score = 0;
+    gameState.level = 1;
+    gameState.trackWidth = 150;
+    gameState.speedIncrease = 0;
+    resetGame();
+    scoreDisplay.textContent = '0';
+    levelDisplay.textContent = '1';
+    gameLoop();
+  }, playAgainBtn);
+});
+
+// Error handling
+window.addEventListener('error', e => console.error('Error:', e.error || e));
+window.addEventListener('unhandledrejection', e => console.error('Unhandled promise:', e.reason));
+</script>
+</body>
+</html>
