@@ -423,7 +423,7 @@ async function payThen(action, triggerBtn) {
 }
 
 let gameState = {
-  comet: { x: 0, y: 0, size: 12, speed: 1.5, direction: 1 },
+  comet: { x: 0, y: 0, size: 12, speed: 0.8, direction: 1 },
   track: [],
   trackWidth: 150,
   cameraY: 0,
@@ -462,7 +462,7 @@ function resetGame() {
     x: canvas.width / 2,
     y: 100,
     size: 12,
-    speed: 1.5,
+    speed: 0.8,
     direction: 1
   };
   gameState.cameraY = 0;
@@ -608,7 +608,7 @@ function gameLoop() {
   gameState.cameraY = c.y - 100;
   gameState.distance += c.speed + gameState.speedIncrease;
   
-  gameState.speedIncrease += 0.0002;
+  gameState.speedIncrease += 0.0001;
   
   gameState.score = Math.floor(gameState.distance / 10);
   scoreDisplay.textContent = gameState.score;
