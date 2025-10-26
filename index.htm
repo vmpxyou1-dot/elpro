@@ -121,9 +121,18 @@
     box-shadow: 0 20px 60px rgba(0,0,0,0.5);
     max-width: 100%;
     display: block;
-    margin: 20px auto 10px auto;
+    margin: 20px auto 0 auto;
     touch-action: none;
     cursor: pointer;
+  }
+  
+  .info {
+    color: #94a3b8;
+    font-size: 13px;
+    text-align: center;
+    display: block;
+    margin: 15px 0 10px 0;
+    padding: 0 20px;
   }
   
   #controls {
@@ -131,6 +140,9 @@
     display: flex;
     justify-content: center;
     padding: 0 20px 20px 20px;
+    margin-top: -30px;
+    position: relative;
+    z-index: 5;
   }
   
   .control-row {
@@ -341,8 +353,6 @@
 
     <canvas id="canvas" width="400" height="600"></canvas>
     
-    <span class="info">Use buttons, tap screen, or press SPACE to change direction</span>
-    
     <div id="controls">
       <div class="control-row">
         <div class="direction-controls">
@@ -351,6 +361,8 @@
         </div>
       </div>
     </div>
+    
+    <span class="info">Use buttons, tap screen, or press SPACE to change direction</span>
 
     <button id="play-again" class="hidden">💰 Pay & Play Again</button>
   </div>
@@ -458,7 +470,7 @@ async function payThen(action, triggerBtn) {
 
 /* ===== Game State ===== */
 let gameState = {
-  comet: { x: 0, y: 0, size: 12, speed: 2.5, direction: 1 },
+  comet: { x: 0, y: 0, size: 12, speed: 1.5, direction: 1 },
   track: [],
   trackWidth: 150,
   cameraY: 0,
@@ -498,7 +510,7 @@ function resetGame() {
     x: canvas.width / 2,
     y: 100,
     size: 12,
-    speed: 2.5,
+    speed: 1.5,
     direction: 1
   };
   gameState.cameraY = 0;
