@@ -664,13 +664,13 @@ function gameLoop() {
   
   // Move comet
   const c = gameState.comet;
-  c.x += c.direction * 2;
+  c.x += c.direction * 1.5;
   c.y += c.speed + gameState.speedIncrease;
-  gameState.cameraY = c.y - 100;
+  gameState.cameraY = c.y - 500; // Keep comet near bottom
   gameState.distance += c.speed + gameState.speedIncrease;
   
-  // Speed increase
-  gameState.speedIncrease += 0.0005;
+  // Speed increase (slower)
+  gameState.speedIncrease += 0.0002;
   
   // Update score
   gameState.score = Math.floor(gameState.distance / 10);
