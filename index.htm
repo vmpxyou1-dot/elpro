@@ -353,6 +353,8 @@
 
     <canvas id="canvas" width="400" height="600"></canvas>
     
+    <span class="info">Use buttons, tap screen, or press SPACE to change direction</span>
+    
     <div id="controls">
       <div class="control-row">
         <div class="direction-controls">
@@ -361,8 +363,6 @@
         </div>
       </div>
     </div>
-    
-    <span class="info">Use buttons, tap screen, or press SPACE to change direction</span>
 
     <button id="play-again" class="hidden">💰 Pay & Play Again</button>
   </div>
@@ -470,7 +470,7 @@ async function payThen(action, triggerBtn) {
 
 /* ===== Game State ===== */
 let gameState = {
-  comet: { x: 0, y: 0, size: 12, speed: 1.5, direction: 1 },
+  comet: { x: 0, y: 0, size: 12, speed: 2.5, direction: 1 },
   track: [],
   trackWidth: 150,
   cameraY: 0,
@@ -510,7 +510,7 @@ function resetGame() {
     x: canvas.width / 2,
     y: 100,
     size: 12,
-    speed: 1.5,
+    speed: 2.5,
     direction: 1
   };
   gameState.cameraY = 0;
@@ -664,13 +664,13 @@ function gameLoop() {
   
   // Move comet
   const c = gameState.comet;
-  c.x += c.direction * 1.5;
+  c.x += c.direction * 2;
   c.y += c.speed + gameState.speedIncrease;
-  gameState.cameraY = c.y - 500; // Keep comet near bottom
+  gameState.cameraY = c.y - 100;
   gameState.distance += c.speed + gameState.speedIncrease;
   
-  // Speed increase (slower)
-  gameState.speedIncrease += 0.0002;
+  // Speed increase
+  gameState.speedIncrease += 0.0005;
   
   // Update score
   gameState.score = Math.floor(gameState.distance / 10);
