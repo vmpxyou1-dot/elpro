@@ -299,8 +299,14 @@
   </div>
 
 <script type="module">
+// Show we're loading
+console.log('Loading Farcaster SDK...');
+
 import { sdk } from 'https://esm.sh/@farcaster/miniapp-sdk';
+
+console.log('SDK imported, calling ready...');
 sdk.actions.ready();
+console.log('SDK ready called, game initialized!');
 
 /* ===== CONFIG ===== */
 const USE_BASE_SEPOLIA = false;
