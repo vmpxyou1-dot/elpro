@@ -5,16 +5,15 @@
     "signature": "qwJ0Fxf5t+jLsoCWb7bIIqnKTpugSS2SZUzRmQFonwkFhWTbVQI7sF1k9uxJ4OpViC+ko2NHRvk0ZDu1v11iKBs="
   }
 }
-  "miniapp": {
+ "miniapp": {
     "version": "1",
     "name": "Farcaster Game",
-    "iconUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvaSr-DUDRdxnkdcaTXI9SRlO3i0tXpqnYGw&s",
-    "homeUrl": "https://elpro-jade.vercel.app/",
+    "iconUrl": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTsNqMt1Hzk3sVts5vdds1J9bCThaDCDwJiIdHRtx_d7qBxqULuk9maEamO-c4_p3BYvb4m3fKJRCOJsuLXq3p4AdARlbzZba8luotMopH6",
+    "homeUrl": "https://farcaster-game-two.vercel.app/",
     "imageUrl": "https://raw.githubusercontent.com/enchanted-assets/public/main/images/tetris-cover.png",
     "buttonTitle": "Play Now",
     "splashImageUrl": "https://raw.githubusercontent.com/enchanted-assets/public/main/images/tetris-splash.png",
-    "splashBackgroundColor": "
-#000000",
+    "splashBackgroundColor": "#000000",
     "description": "Play a fun web game directly in Farcaster!"
-    }
+  }
 }
