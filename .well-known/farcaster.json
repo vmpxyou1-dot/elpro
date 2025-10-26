@@ -1,20 +1,18 @@
-
 {
   "accountAssociation": {
     "header": "eyJmaWQiOjUzNDM3NCwidHlwZSI6ImF1dGgiLCJrZXkiOiIweEExNEZBZjRFRTIwZTg0MTQ2QTkwMzMwMTk3MTQyNzI1Mzk5NTVERjMifQ",
     "payload": "eyJkb21haW4iOiJlbHByby1qYWRlLnZlcmNlbC5hcHAifQ",
     "signature": "eUQ3ZLfCtbYuf0KtjWdvuA3XfDqsIvqO2GexyHcY3WI/nrJrIOSzoFfxQI+K/4/3DY7lksig0meThKKuQYY0tRs="
-  }
-  }
+  },
   "miniapp": {
     "version": "1",
-    "name": "Farcaster Game",
+    "name": "Crash the Comet",
     "iconUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvaSr-DUDRdxnkdcaTXI9SRlO3i0tXpqnYGw&s",
     "homeUrl": "https://elpro-jade.vercel.app/",
     "imageUrl": "https://raw.githubusercontent.com/enchanted-assets/public/main/images/tetris-cover.png",
     "buttonTitle": "Play Now",
     "splashImageUrl": "https://raw.githubusercontent.com/enchanted-assets/public/main/images/tetris-splash.png",
-    "splashBackgroundColor": "#000000",
-    "description": "Play a fun web game directly in Farcaster!"
-    }
+    "splashBackgroundColor": "#0a0e13",
+    "description": "Navigate your comet through the winding track! Pay to play this exciting game."
+  }
 }
