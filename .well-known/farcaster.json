@@ -1,14 +1,14 @@
 {
   "accountAssociation": {
-    "header": "eyJmaWQiOjUzNDM3NCwidHlwZSI6ImF1dGgiLCJrZXkiOiIweEExNEZBZjRFRTIwZTg0MTQ2QTkwMzMwMTk3MTQyNzI1Mzk5NTVERjMifQ",
-    "payload": "eyJkb21haW4iOiJmYXJjYXN0ZXItZ2FtZS10d28udmVyY2VsLmFwcCJ9",
-    "signature": "8NaAYOUpm2gtzgVyVpt43TiFlHpBi0uF6jKJdfCAWFoiEyDTtJ7njorsexgod03+mfrheE7rvV2jWLnmmGI42hw="
+    "header": "eyJmaWQiOjUyNjAzOSwidHlwZSI6ImF1dGgiLCJrZXkiOiIweEIzN2U2NTg1OTkyNmZCMTU4MTMzZTZjQjU3NmUyRTYyQWE1OTUxM0QifQ",
+    "payload": "eyJkb21haW4iOiJlbHByby1qYWRlLnZlcmNlbC5hcHAifQ",
+    "signature": "QH4bHxmivupnIDz2CdIkeRj4oUkAcn5g1dNXA+CyCZBawyxIiGmIkuxgULtx9jh1U/CIY88iqpbkrAegfiRtDhs="
   },
   "miniapp": {
     "version": "1",
     "name": "Farcaster Game",
-    "iconUrl": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTsNqMt1Hzk3sVts5vdds1J9bCThaDCDwJiIdHRtx_d7qBxqULuk9maEamO-c4_p3BYvb4m3fKJRCOJsuLXq3p4AdARlbzZba8luotMopH6",
-    "homeUrl": "https://farcaster-game-two.vercel.app/",
+    "iconUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvaSr-DUDRdxnkdcaTXI9SRlO3i0tXpqnYGw&s",
+    "homeUrl": "https://elpro-jade.vercel.app/",
     "imageUrl": "https://raw.githubusercontent.com/enchanted-assets/public/main/images/tetris-cover.png",
     "buttonTitle": "Play Now",
     "splashImageUrl": "https://raw.githubusercontent.com/enchanted-assets/public/main/images/tetris-splash.png",
