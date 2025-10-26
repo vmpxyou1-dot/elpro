@@ -99,21 +99,6 @@
     cursor: not-allowed;
   }
   
-  .btn-secondary {
-    padding: 12px 24px;
-    background: linear-gradient(135deg, #38bdf8, #34d399);
-    color: #0a1929;
-    border: none;
-    border-radius: 10px;
-    font-weight: 900;
-    font-size: 14px;
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(56,189,248,0.3);
-    transition: all 0.2s;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-  }
-  
   #canvas {
     background: #0a0a1f;
     border: 3px solid #7c3aed;
@@ -156,12 +141,6 @@
     gap: 20px;
   }
   
-  .control-group {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
   label {
     font-weight: 700;
     font-size: 14px;
@@ -174,15 +153,6 @@
     font-size: 18px;
     font-weight: 700;
     color: #a855f7;
-  }
-  
-  .info {
-    color: #94a3b8;
-    font-size: 13px;
-    text-align: center;
-    display: block;
-    margin-bottom: 15px;
-    padding: 0 20px;
   }
   
   #status {
@@ -284,11 +254,6 @@
     box-shadow: 0 3px 10px rgba(168,85,247,0.4);
   }
   
-  @keyframes bounce {
-    0%, 100% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
-    50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
-  }
-  
   @media (max-width: 720px) {
     #canvas { width: 100%; height: auto; }
     .game-header {
@@ -310,7 +275,6 @@
 </style>
 </head>
 <body>
-  <!-- Game Header with Score & Level -->
   <div class="game-header">
     <h1>🚀 Crash the Comet</h1>
     <div class="header-stats">
@@ -326,7 +290,6 @@
   </div>
 
   <div class="wrap">
-    <!-- Intro Overlay -->
     <div id="intro-overlay" class="overlay">
       <div class="card" role="dialog" aria-modal="true">
         <h1>🚀 Crash the Comet</h1>
@@ -368,16 +331,9 @@
   </div>
 
 <script type="module">
-// Show we're loading
-console.log('Loading Farcaster SDK...');
-
 import { sdk } from 'https://esm.sh/@farcaster/miniapp-sdk';
-
-console.log('SDK imported, calling ready...');
 sdk.actions.ready();
-console.log('SDK ready called, game initialized!');
 
-/* ===== CONFIG ===== */
 const USE_BASE_SEPOLIA = false;
 const RECIPIENT = "0xc4EB7B433f9911a15c18729D8BE5e5fDa1187E1a";
 const AMOUNT_ETH = "0.00001";
@@ -386,7 +342,6 @@ const BASE_MAINNET = { chainId: "0x2105",  explorer: "https://basescan.org/tx/" 
 const BASE_SEPOLIA = { chainId: "0x14a34", explorer: "https://sepolia.basescan.org/tx/" };
 const TARGET = USE_BASE_SEPOLIA ? BASE_SEPOLIA : BASE_MAINNET;
 
-/* ===== DOM ===== */
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const statusEl = document.getElementById('status');
@@ -400,7 +355,6 @@ const addLine = html => { showStatus(); statusEl.insertAdjacentHTML('beforeend',
 const clearStatus = () => statusEl.innerHTML = '';
 const disable = (el, yes=true) => { if (el) el.disabled = yes; };
 
-/* ===== Wallet Helpers ===== */
 function parseEther(x) {
   const [w, f=""] = String(x).split('.');
   const frac = (f + '0'.repeat(18)).slice(0, 18);
@@ -468,7 +422,6 @@ async function payThen(action, triggerBtn) {
   }
 }
 
-/* ===== Game State ===== */
 let gameState = {
   comet: { x: 0, y: 0, size: 12, speed: 1.5, direction: 1 },
   track: [],
@@ -483,7 +436,6 @@ let gameState = {
   gameOver: false
 };
 
-/* ===== Track Generation ===== */
 function generateTrack() {
   const track = [];
   let centerX = canvas.width / 2;
@@ -518,7 +470,6 @@ function resetGame() {
   gameState.speedIncrease = 0;
 }
 
-/* ===== Draw Functions ===== */
 function drawComet() {
   const c = gameState.comet;
   const screenY = c.y - gameState.cameraY;
@@ -526,7 +477,6 @@ function drawComet() {
   ctx.save();
   ctx.translate(c.x, screenY);
   
-  // Comet tail
   const tailLength = 40;
   const gradient = ctx.createLinearGradient(0, c.size, 0, c.size + tailLength);
   gradient.addColorStop(0, 'rgba(168, 85, 247, 0.8)');
@@ -542,7 +492,6 @@ function drawComet() {
   ctx.closePath();
   ctx.fill();
   
-  // Comet body glow
   const glowGradient = ctx.createRadialGradient(0, 0, 0, 0, 0, c.size * 1.5);
   glowGradient.addColorStop(0, 'rgba(168, 85, 247, 0.5)');
   glowGradient.addColorStop(1, 'rgba(168, 85, 247, 0)');
@@ -551,7 +500,6 @@ function drawComet() {
   ctx.arc(0, 0, c.size * 1.5, 0, Math.PI * 2);
   ctx.fill();
   
-  // Comet body
   const bodyGradient = ctx.createRadialGradient(0, 0, 0, 0, 0, c.size);
   bodyGradient.addColorStop(0, '#e9d5ff');
   bodyGradient.addColorStop(0.5, '#a855f7');
@@ -562,7 +510,6 @@ function drawComet() {
   ctx.arc(0, 0, c.size, 0, Math.PI * 2);
   ctx.fill();
   
-  // Farcaster symbol
   ctx.strokeStyle = '#ffffff';
   ctx.lineWidth = 2;
   ctx.beginPath();
@@ -584,12 +531,10 @@ function drawTrack() {
     
     if (screenY < -50 || screenY > canvas.height + 50) continue;
     
-    // Track boundaries (dark walls)
     ctx.fillStyle = '#1a1a2e';
     ctx.fillRect(0, screenY, segment.centerX - segment.width / 2, 20);
     ctx.fillRect(segment.centerX + segment.width / 2, screenY, canvas.width, 20);
     
-    // Track path (lighter)
     const trackGradient = ctx.createLinearGradient(
       segment.centerX - segment.width / 2, 0,
       segment.centerX + segment.width / 2, 0
@@ -601,7 +546,6 @@ function drawTrack() {
     ctx.fillStyle = trackGradient;
     ctx.fillRect(segment.centerX - segment.width / 2, screenY, segment.width, 20);
     
-    // Center line
     ctx.strokeStyle = '#a855f7';
     ctx.lineWidth = 2;
     ctx.setLineDash([10, 10]);
@@ -611,7 +555,6 @@ function drawTrack() {
     ctx.stroke();
     ctx.setLineDash([]);
     
-    // Edge markers
     ctx.strokeStyle = '#ef4444';
     ctx.lineWidth = 1;
     ctx.beginPath();
@@ -634,7 +577,6 @@ function drawStars() {
   }
 }
 
-/* ===== Collision Detection ===== */
 function checkCollision() {
   const c = gameState.comet;
   const segmentIndex = Math.floor(c.y / 20);
@@ -651,32 +593,26 @@ function checkCollision() {
   return false;
 }
 
-/* ===== Game Loop ===== */
 function gameLoop() {
   if (!gameState.gameActive || gameState.gameOver) return;
   
-  // Background
   ctx.fillStyle = '#0a0a1f';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   
   drawStars();
   drawTrack();
   
-  // Move comet
   const c = gameState.comet;
   c.x += c.direction * 2;
   c.y += c.speed + gameState.speedIncrease;
   gameState.cameraY = c.y - 100;
   gameState.distance += c.speed + gameState.speedIncrease;
   
-  // Speed increase
   gameState.speedIncrease += 0.0002;
   
-  // Update score
   gameState.score = Math.floor(gameState.distance / 10);
   scoreDisplay.textContent = gameState.score;
   
-  // Level up
   if (c.y / 20 >= gameState.track.length - 20) {
     gameState.level++;
     levelDisplay.textContent = gameState.level;
@@ -686,7 +622,6 @@ function gameLoop() {
   
   drawComet();
   
-  // Check collision
   if (checkCollision()) {
     endGame();
     return;
@@ -695,7 +630,6 @@ function gameLoop() {
   gameState.animationId = requestAnimationFrame(gameLoop);
 }
 
-/* ===== End Game ===== */
 function endGame() {
   gameState.gameOver = true;
   gameState.gameActive = false;
@@ -723,7 +657,6 @@ function endGame() {
   playAgainBtn.classList.remove('hidden');
 }
 
-/* ===== Event Listeners ===== */
 function changeDirection() {
   if (!gameState.gameActive || gameState.gameOver) return;
   gameState.comet.direction *= -1;
@@ -742,7 +675,6 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-// Direction button controls
 document.getElementById('btn-left').addEventListener('click', () => {
   if (!gameState.gameActive || gameState.gameOver) return;
   gameState.comet.direction = -1;
@@ -765,7 +697,6 @@ document.getElementById('btn-right').addEventListener('touchstart', (e) => {
   gameState.comet.direction = 1;
 });
 
-/* ===== Start Game (Pay-Gated) ===== */
 playBtn.addEventListener('click', (e) => {
   e.preventDefault();
   payThen(() => {
@@ -782,11 +713,25 @@ playBtn.addEventListener('click', (e) => {
   }, playBtn);
 });
 
-/* ===== Play Again (Pay-Gated) ===== */
 playAgainBtn.addEventListener('click', (e) => {
   e.preventDefault();
   payThen(() => {
     playAgainBtn.classList.add('hidden');
     gameState.gameActive = true;
     gameState.gameOver = false;
-    gameState.score
+    gameState.score = 0;
+    gameState.level = 1;
+    gameState.trackWidth = 150;
+    gameState.speedIncrease = 0;
+    resetGame();
+    scoreDisplay.textContent = '0';
+    levelDisplay.textContent = '1';
+    gameLoop();
+  }, playAgainBtn);
+});
+
+window.addEventListener('error', e => console.error('Error:', e.error || e));
+window.addEventListener('unhandledrejection', e => console.error('Unhandled promise:', e.reason));
+</script>
+</body>
+</html>
